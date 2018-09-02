@@ -37,6 +37,7 @@ extern "C" {
 
 #include <boost/thread.hpp>
 #include <algorithm>
+#include <memory>
 #include <queue>
 #include <utility>
 
@@ -87,9 +88,7 @@ BlockAssembler::BlockAssembler(const CChainParams& params, const Options& option
 static BlockAssembler::Options DefaultOptions(const CChainParams& params)
 {
     // Block resource limits
-    // If neither -blockmaxsize or -blockmaxweight is given, limit to DEFAULT_BLOCK_MAX_*
-    // If only one is given, only restrict the specified resource.
-    // If both are given, restrict both.
+    // If -blockmaxweight is not given, limit to DEFAULT_BLOCK_MAX_WEIGHT
     BlockAssembler::Options options;
     options.nBlockMaxWeight = gArgs.GetArg("-blockmaxweight", DEFAULT_BLOCK_MAX_WEIGHT);
     if (gArgs.IsArgSet("-blockmintxfee")) {
@@ -474,6 +473,7 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 
 static bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainparams)
 {
+    LogPrintf("Nfactor %s\n", pblock->GetNfactor());
     LogPrintf("%s\n", pblock->ToString());
     LogPrintf("generated %s\n", FormatMoney(pblock->vtx[0]->vout[0].nValue));
 

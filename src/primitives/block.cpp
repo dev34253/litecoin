@@ -17,8 +17,6 @@ extern "C" {
 #include <crypto/common.h>
 #include <crypto/scrypt.h>
 
-// DEBUG
-//#include <util.h>
 #include <arith_uint256.h>
 
 static int block_length = 63;
@@ -39,20 +37,20 @@ int CBlockHeader::GetNfactor() const
                   Nfactor = 4;}  // GENESIS
 
 // Possible future implementation
-//      else if((lasthashchar == "0") || (lasthashchar == "6") || (lasthashchar == "a")){
-//               Nfactor = 15;}
-//      else if((lasthashchar == "1") || (lasthashchar == "b")){
-//               Nfactor = 16;}
-//      else if((lasthashchar == "2") || (lasthashchar == "7") || (lasthashchar == "c")){
-//               Nfactor = 17;}
-//      else if((lasthashchar == "3") || (lasthashchar == "d")){
-//               Nfactor = 18;}
-//      else if((lasthashchar == "4") || (lasthashchar == "9") || (lasthashchar == "e")){
-//               Nfactor = 19;}
-//      else if((lasthashchar == "5") || (lasthashchar == "f")){
-//               Nfactor = 20;}
-//      else if((lasthashchar == "8")){
-//               Nfactor = 21;}
+      else if((lasthashchar == "0") || (lasthashchar == "6") || (lasthashchar == "a")){
+               Nfactor = 22;}
+      else if((lasthashchar == "1") || (lasthashchar == "b")){
+               Nfactor = 21;}
+      else if((lasthashchar == "2") || (lasthashchar == "7") || (lasthashchar == "c")){
+               Nfactor = 20;}
+      else if((lasthashchar == "3") || (lasthashchar == "d")){
+               Nfactor = 19;}
+      else if((lasthashchar == "4") || (lasthashchar == "9") || (lasthashchar == "e")){
+               Nfactor = 20;}
+      else if((lasthashchar == "5") || (lasthashchar == "f")){
+               Nfactor = 21;}
+      else if((lasthashchar == "8")){
+               Nfactor = 22;}
 
       return Nfactor;
 }
@@ -81,7 +79,7 @@ uint256 CBlockHeader::GetPoWHash() const
     arith_uint256 ArithYACHash = UintToArith256(yhash);
     arith_uint256 CombinedHash = (ArithLTCHash + ArithYACHash);
 
-    finalhash = ArithToUint256(CombinedHash);
+    finalhash = ArithToUint256(CombinedHash);    
 
     return finalhash;
 }

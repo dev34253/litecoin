@@ -364,7 +364,7 @@ void BitcoinGUI::createActions()
     encryptWalletAction->setStatusTip(tr("Encrypt the private keys that belong to your wallet"));
     encryptWalletAction->setCheckable(true);
     backupWalletAction = new QAction(platformStyle->TextColorIcon(":/icons/filesave"), tr("&Backup Wallet..."), this);
-    backupWalletAction->setStatusTip(tr("Backup wallet to another location"));    
+    backupWalletAction->setStatusTip(tr("Backup wallet to another location"));
 
     minerAction =  new QAction(QIcon(":/icons/tx_mined"), tr("&Yacoin Miner"), this);
     minerAction->setStatusTip(tr("Yacoin CPU Proof of Work miner"));
@@ -524,10 +524,6 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
 
         // Show progress dialog
         connect(_clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
-
-        QTimer *timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(updateMining()));
-        timer->start(1000); //1 second
 
         rpcConsole->setClientModel(_clientModel);
 #ifdef ENABLE_WALLET
@@ -1037,6 +1033,7 @@ void BitcoinGUI::message(const QString &title, const QString &message, unsigned 
 
         showNormalIfMinimized();
         QMessageBox mBox((QMessageBox::Icon)nMBoxIcon, strTitle, message, buttons, this);
+        mBox.setTextFormat(Qt::PlainText);
         int r = mBox.exec();
         if (ret != nullptr)
             *ret = r == QMessageBox::Ok;
@@ -1057,6 +1054,11 @@ void BitcoinGUI::changeEvent(QEvent *e)
             if(!(wsevt->oldState() & Qt::WindowMinimized) && isMinimized())
             {
                 QTimer::singleShot(0, this, SLOT(hide()));
+                e->ignore();
+            }
+            else if((wsevt->oldState() & Qt::WindowMinimized) && !isMinimized())
+            {
+                QTimer::singleShot(0, this, SLOT(show()));
                 e->ignore();
             }
         }

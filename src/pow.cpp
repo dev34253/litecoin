@@ -89,10 +89,9 @@ unsigned int GetNextWorkRequiredLTC(const CBlockIndex* pindexLast, const CBlockH
         if (params.fPowAllowMinDifficultyBlocks)
         {
             // Special difficulty rule for testnet:
-            // If the new block's timestamp is more than 10 minutes
+            // If the new block's timestamp is more than 2* 1.5 minutes
             // then allow mining of a min-difficulty block.
-            //if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
-            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing)
+            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
                 return nProofOfWorkLimit;
             else
             {
@@ -120,7 +119,7 @@ unsigned int GetNextWorkRequiredLTC(const CBlockIndex* pindexLast, const CBlockH
 
     assert(pindexFirst);
 
-   return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
 }
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
